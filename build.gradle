@@ -1,49 +1,64 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
     id 'java-gradle-plugin'
-    id 'maven'
+    id 'maven-publish'
     id "com.gradle.plugin-publish" version "0.12.0"
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
 group 'io.ib67.oni'
-version '1.0-SNAPSHOT'
+version '1.0'
 repositories {
     mavenCentral()
     jcenter()
 }
+Properties localConf = new Properties()
+localConf.load(new FileReader("${System.getProperty("user.home")}/.gradle/gradle.properties"))
 gradlePlugin {
     plugins {
         linker {
             id = "io.ib67.oni.linker"
             implementationClass = "io.ib67.oni.Linker"
+            displayName= "Oni Linker"
+            description= "Oni Linker"
         }
     }
 }
 pluginBundle {
-    website = 'https://sfclub.cc/project/oni'
+    website = 'https://github.com/saltedfishclub/oni-gradle-plugin'
     vcsUrl = 'https://github.com/saltedfishclub/oni-gradle-plugin'
-    description = 'OniBootstrap linker.'
-
-    plugins {
-        linker {
-            // id is captured from java-gradle-plugin configuration
-            displayName = 'OniBootstrap linker'
-        }
-    }
+    tags = ['bukkit', 'minecraft']
 }
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
     gradleApi()
 }
+publishing{
+    publications{
+        artifact(MavenPublication) {
+            groupId = "io.ib67.oni"
+            artifactId = "Linker"
+            version = "1.0-SNAPSHOT"
 
-uploadArchives{
-    repositories.mavenDeployer{
-        //local debug
-        repository(url: uri('/tmp/repo'))
-        pom.groupId = "io.ib67.oni"
-        pom.artifactId = "Linker"
-        pom.version = "1.0-SNAPSHOT"
+            from components.kotlin
+        }
+    }
+    repositories{
+        maven {
+            url = "/tmp/repo"
+            name = "TmpLocal"
+        }
+        maven {
+            def baseUrl="https://repo.sfclub.cc"
+            def releasesRepoUrl = "$baseUrl/releases"
+            def snapshotsRepoUrl = "$baseUrl/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            name = "SFOfficial"
+            credentials {
+                username = localConf.getProperty("SF_REPO_ALIAS")
+                password = localConf.getProperty("SF_REPO_TOKEN")
+            }
+        }
     }
 }

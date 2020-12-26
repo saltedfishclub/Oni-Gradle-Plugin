@@ -17,7 +17,7 @@ class Linker : Plugin<Project> {
         oniSettings=project.extensions.create("oni",OniSetting::class.java)
         conf=project.configurations.maybeCreate("oniRuntime")
         project.repositories.maven {
-            it.url=URI.create("https://maven.hbxueli.com/repository/maven-releases/")
+            it.url=URI.create("https://repo.sfclub.cc/releases/")
             it.name="OniOfficial"
         }
         this.project=project
