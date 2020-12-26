@@ -7,7 +7,8 @@ plugins {
 }
 
 group 'io.ib67.oni'
-version '1.0'
+def ver="1.1"
+version ver
 repositories {
     mavenCentral()
     jcenter()
@@ -39,7 +40,7 @@ publishing{
         artifact(MavenPublication) {
             groupId = "io.ib67.oni"
             artifactId = "Linker"
-            version = "1.0-SNAPSHOT"
+            version = ver
 
             from components.kotlin
         }

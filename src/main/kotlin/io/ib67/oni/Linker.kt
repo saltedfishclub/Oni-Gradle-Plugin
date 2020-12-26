@@ -27,7 +27,7 @@ class Linker : Plugin<Project> {
                 project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:Bootstrap:${oniSettings.bootstrapVersion}"))
             }
             if(oniSettings.autoAddOni){
-                project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:Oni:${oniSettings.oniVersion}"))
+                project.configurations.getByName("compileOnly").dependencies.add(project.dependencies.create("io.ib67.oni:Oni:${oniSettings.oniVersion}"))
             }
         }
         project.getTasksByName("processResources",false).stream().findFirst()
