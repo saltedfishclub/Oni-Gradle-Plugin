@@ -15,12 +15,23 @@ class Linker : Plugin<Project> {
     lateinit var project: Project
     override fun apply(project: Project) {
         oniSettings=project.extensions.create("oni",OniSetting::class.java)
-        conf=project.configurations.create("dynamicLoads")
-        this.project=project
-        project.task("generateOniSetting").doLast{
-            generateOniSettings()
+        conf=project.configurations.maybeCreate("oniRuntime")
+        project.repositories.maven {
+            it.url=URI.create("https://maven.hbxueli.com/repository/maven-releases/")
+            it.name="OniOfficial"
         }
-        project.getTasksByName("processResources",false).stream().findFirst().get().doLast {
+        this.project=project
+        project.afterEvaluate{
+            project.configurations.getByName("compileOnly").dependencies.addAll(conf.allDependencies)
+            if(oniSettings.autoAddBootstrap){
+                project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:Bootstrap:${oniSettings.bootstrapVersion}"))
+            }
+            if(oniSettings.autoAddOni){
+                project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:Oni:${oniSettings.oniVersion}"))
+            }
+        }
+        project.getTasksByName("processResources",false).stream().findFirst()
+            .get().doLast {
             generateOniSettings()
         }
 

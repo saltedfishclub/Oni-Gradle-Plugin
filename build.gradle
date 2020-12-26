@@ -24,7 +24,6 @@ pluginBundle {
     website = 'https://sfclub.cc/project/oni'
     vcsUrl = 'https://github.com/saltedfishclub/oni-gradle-plugin'
     description = 'OniBootstrap linker.'
-    tags = ['oni']
 
     plugins {
         linker {
@@ -33,7 +32,6 @@ pluginBundle {
         }
     }
 }
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
