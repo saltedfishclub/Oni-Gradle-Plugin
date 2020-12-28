@@ -20,6 +20,10 @@ class Linker : Plugin<Project> {
             it.url=URI.create("https://repo.sfclub.cc/releases/")
             it.name="OniOfficial"
         }
+        project.repositories.maven {
+            it.url=URI.create("https://repo.sfclub.cc/snapshots/")
+            it.name="OniOfficial Snapshot"
+        }
         this.project=project
         project.afterEvaluate{
             project.configurations.getByName("compileOnly").dependencies.addAll(conf.allDependencies)

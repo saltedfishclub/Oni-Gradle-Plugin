@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'io.ib67.oni'
-def ver="1.1"
+def ver="1.2"
 version ver
 repositories {
     mavenCentral()
