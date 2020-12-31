@@ -9,7 +9,7 @@ import java.io.File
 import java.net.URI
 
 class Linker : Plugin<Project> {
-    val DEFAULT_ONI_VERSION="1-1.0"
+    val DEFAULT_ONI_VERSION="1.0-M1-dev-1"
     lateinit var oniSettings: OniSetting
     lateinit var conf: Configuration
     lateinit var project: Project
@@ -18,17 +18,17 @@ class Linker : Plugin<Project> {
         conf=project.configurations.maybeCreate("oniRuntime")
         project.repositories.maven {
             it.url=URI.create("https://repo.sfclub.cc/releases/")
-            it.name="OniOfficial"
+            it.name="S.F Official"
         }
         project.repositories.maven {
             it.url=URI.create("https://repo.sfclub.cc/snapshots/")
-            it.name="OniOfficial Snapshot"
+            it.name="S.F Official Snapshot"
         }
         this.project=project
         project.afterEvaluate{
             project.configurations.getByName("compileOnly").dependencies.addAll(conf.allDependencies)
             if(oniSettings.autoAddBootstrap){
-                project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:Bootstrap:${oniSettings.bootstrapVersion}"))
+                project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:BootStrap:${oniSettings.bootstrapVersion}"))
             }
             if(oniSettings.autoAddOni){
                 project.configurations.getByName("compileOnly").dependencies.add(project.dependencies.create("io.ib67.oni:Oni:${oniSettings.oniVersion}"))

@@ -1,18 +1,22 @@
 package io.ib67.oni
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.gradle.api.artifacts.Dependency
 
 @Serializable
-data class OniDependency(val artifactId:String,val groupId:String,val version:String) {
+data class OniDependency(
+    val groupId: String,
+    val artifactId: String,
+    val version: String,
+    val classifier: String?=null,
+    val packagingType: String="jar",
+    val optional: Boolean=false
+    ) {
     companion object {
         fun fromGradleDependency(dep: Dependency): OniDependency{
             return OniDependency(dep.name,dep.group!!,dep.version!!)
         }
     }
-    var optional = false
-    var boundedRepositories: String? = null
-    fun asArtifactUrlPart(): String {
-        return "$groupId/$artifactId/$version/$artifactId-$version.jar"
-    }
+
 }
