@@ -6,7 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
-group 'io.ib67.oni'
+group 'cc.sfclub.oni'
 version "1.3"
 repositories {
     mavenCentral()
@@ -15,10 +15,10 @@ repositories {
 gradlePlugin {
     plugins {
         linker {
-            id = "io.ib67.oni.linker"
+            id = "cc.sfclub.oni.linker"
             implementationClass = "io.ib67.oni.Linker"
             displayName= "Oni Linker"
-            description= "Oni Linker"
+            description= "A gradle plugin that produces a config file automatically for oni-bukkit-bootstrap to do something (e.g solve/download dependencies) for your bukkit plugins."
         }
     }
 }
@@ -35,7 +35,7 @@ dependencies {
 publishing{
     publications{
         artifact(MavenPublication) {
-            groupId = "io.ib67.oni"
+            groupId = "cc.sfclub.oni"
             artifactId = "Linker"
             version = project.version
 
