@@ -27,11 +27,12 @@ class Linker : Plugin<Project> {
         this.project=project
         project.afterEvaluate{
             project.configurations.getByName("compileOnly").dependencies.addAll(conf.allDependencies)
-            if(oniSettings.autoAddBootstrap){
+            project.configurations.getByName("testCompileOnly").dependencies.addAll(conf.allDependencies)
+            if(oniSettings.bootstrapVersion != null){
                 project.configurations.getByName("compile").dependencies.add(project.dependencies.create("io.ib67.oni:BootStrap:${oniSettings.bootstrapVersion}"))
             }
-            if(oniSettings.autoAddOni){
-                project.configurations.getByName("compileOnly").dependencies.add(project.dependencies.create("io.ib67.oni:Oni:${oniSettings.oniVersion}"))
+            if(oniSettings.oniVersion!=null){
+                project.configurations.getByName("compileOnly").dependencies.add(project.dependencies.create("io.ib67.oni:Oni-all:${oniSettings.oniVersion}"))
             }
         }
         project.getTasksByName("processResources",false).stream().findFirst()
@@ -42,15 +43,19 @@ class Linker : Plugin<Project> {
     }
     private fun generateOniSettings(){
         val deps= mutableListOf<OniDependency>()
-        conf.dependencies.forEach { deps.add(OniDependency.fromGradleDependency(it)) }
-        oniSettings.dependencies.addAll(deps)
-        if(oniSettings.oniVersion==null){
-            oniSettings.oniVersion=DEFAULT_ONI_VERSION;
+        if(oniSettings.oniVersion!=null){
+            deps.add(OniDependency("io.ib67.oni","Oni-all", oniSettings.oniVersion!!,"all","jar",false))
         }
+        conf.dependencies.forEach {
+            println("Attempting to add ${it.name}")
+            deps.add(OniDependency.fromGradleDependency(it))
+        }
+        oniSettings.dependencies.addAll(deps)
+        oniSettings.checkerList.add("io.ib67.oni.internal.MavenDependencyEnvChecker")
         val json=Json.encodeToString(oniSettings)
-        val oniSetJson=File(project.buildDir,"resources/main/oni.setting.json")
+        val oniSetJson=File(project.buildDir,oniSettings.genSettingTo)
         oniSetJson.createNewFile()
         oniSetJson.writeText(json)
-        println("Oni Bootstrap file was generated! Using Oni ${oniSettings.oniVersion}")
+        println("Oni Bootstrap file was generated!")
     }
 }

@@ -1,19 +1,19 @@
 package io.ib67.oni
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import org.gradle.api.artifacts.Dependency
+import kotlinx.serialization.Transient
 
 @Serializable
 open class OniSetting {
-    var verbose=false
-    var oniVersion: String?=null
-    @Transient
-    var autoAddBootstrap=true
-    @Transient
-    var autoAddOni=true
-    @Transient
-    var bootstrapVersion="3.1"
-    var additionalRepositories= mutableListOf<String>()
+    var verbose = false
+    var checkerList = mutableListOf<String>()
     var dependencies = mutableListOf<OniDependency>()
+    var additionalRepos = mutableListOf<String>()
+    @Transient
+    var oniVersion:String? = "1.0-M1-dev-1"
+    @Transient
+    var bootstrapVersion:String? = "3.1"
+    @Transient
+    var genSettingTo = "resources/main/oni.setting.json"
 }

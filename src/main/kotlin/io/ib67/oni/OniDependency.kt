@@ -10,12 +10,12 @@ data class OniDependency(
     val artifactId: String,
     val version: String,
     val classifier: String?=null,
-    val packagingType: String="jar",
+    val packagingType: String?=null,
     val optional: Boolean=false
     ) {
     companion object {
         fun fromGradleDependency(dep: Dependency): OniDependency{
-            return OniDependency(dep.name,dep.group!!,dep.version!!)
+            return OniDependency(dep.group!!,dep.name,dep.version!!)
         }
     }
 
